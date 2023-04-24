@@ -3,14 +3,16 @@
 
 import 'dart:convert';
 
+import 'package:airfrance/bindings/init_bindings.dart';
 import 'package:airfrance/controllers/profil_controller.dart';
 import 'package:airfrance/views/home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-import '../models/user.dart';
+import '../models/User.dart';
 import '../providers/db_service.dart';
+import '../routes/routes.dart';
 
 class LoginController extends GetxController{
   final Rx<TextEditingController> emailController = TextEditingController().obs;
@@ -46,20 +48,20 @@ class LoginController extends GetxController{
       };
 
       final res = await ApiProvider().postData('connexion.php', data);
-      final body = jsonDecode(res.body)['data'];
+      final body = jsonDecode(res.body);
 
-      printInfo(info: 'DB CONN LOGIN====>  : $body') ;
+       printInfo(info: 'DB CONN LOGIN====>  : $body') ;
 
-      if (res.statusCode == 200) {
-        box.write('login', body);
+      if (res.statusCode == 200 && body['status'] == 200) {
+        box.write('login', body['data']);
         printInfo(info: 'DB CONN STORAGE: ${box.read('login')}' );
-        ProfileController.to.user.value = User.fromJson(body);
-        Get.offAll(() => HomeScreen(), arguments: body);
+        // ProfileController.to.user.value = User.fromJson(body);
+        Get.delete<LoginController>();
+        return Get.offAndToNamed(Routes.home);
       }
-
     } catch (e) {
       Get.defaultDialog(
-          title: 'Erreur',
+          title: 'Une erreur est survenue',
           middleText: "$e",
           textConfirm: 'OK',
           onConfirm: () {

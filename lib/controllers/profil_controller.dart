@@ -7,12 +7,17 @@ import 'package:get/state_manager.dart';
 import 'package:get/utils.dart';
 import 'package:get_storage/get_storage.dart';
 
-import '../models/user.dart';
+import '../models/User.dart';
 import '../providers/db_service.dart';
+import '../routes/routes.dart';
 import '../views/home.dart';
 
 class ProfileController extends GetxController {
-  final isLoading = true.obs;
+  // init
+  Future<ProfileController> init() async {
+    return this;
+  }
+  final isLoading = false.obs;
 
   // Profile controller to init
   static ProfileController get to => Get.find();
@@ -27,6 +32,7 @@ class ProfileController extends GetxController {
   final emailController = TextEditingController().obs;
   final passwordController = TextEditingController().obs;
   final confirmPasswordController = TextEditingController().obs;
+  final showPassword = false.obs;
 
   @override
   void onInit() {
@@ -35,12 +41,14 @@ class ProfileController extends GetxController {
 
   @override
   void onReady() {
-    super.onReady();
-    printInfo(info: 'DB LOCAL STORAGE ====>>> ${box.read('login')}');
-    user.value = User.fromJson(box.read('login'));
-    nameController.value.text = user.value.name;
-    firstnameController.value.text = user.value.firstname;
-    emailController.value.text = user.value.email;
+     super.onReady();
+     if (box.hasData('login')) {
+       printInfo(info: 'DB LOCAL STORAGE ====>>> ${box.read('login')}');
+       user.value = User.fromJson(box.read('login'));
+       nameController.value.text = user.value.name;
+       firstnameController.value.text = user.value.firstname;
+       emailController.value.text = user.value.email;
+      }
   }
 
   @override
@@ -60,8 +68,7 @@ class ProfileController extends GetxController {
         'nom': nameController.value.text,
         'prenom': firstnameController.value.text,
         'email': emailController.value.text,
-        'password': passwordController.value.text,
-        'confirmPassword': confirmPasswordController.value.text,
+        'mdp': passwordController.value.text,
         'updateProfile': 'updateProfile',
         'from': 'api'
       };
@@ -71,14 +78,12 @@ class ProfileController extends GetxController {
 
       printInfo(info: 'DB CONN updateProfile: $body');
 
-      if (res.statusCode == 200) {
-        box.remove('login');
-        box.write('login', jsonEncode(body));
-        printInfo(info: 'DB CONN STORAGE: ${box.read('login')}');
+      if (body['status'] == 200) {
+        await box.remove('login');
+        await box.write('login', body['data']);
         Get.delete<ProfileController>();
         Get.put(ProfileController());
-        box.write('login', (value) => jsonEncode(body));
-        Get.offAll(() => HomeScreen(), arguments: body);
+        Get.offAndToNamed(Routes.home);
       }
     } catch (e) {
       Get.defaultDialog(

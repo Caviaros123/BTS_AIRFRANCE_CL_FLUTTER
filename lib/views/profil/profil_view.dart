@@ -9,19 +9,19 @@ import 'package:get_storage/get_storage.dart';
 
 import '../../controllers/profil_controller.dart';
 
-class ProfileView extends StatelessWidget {
+class ProfileView extends GetView<ProfileController> {
   ProfileView({Key? key}) : super(key: key);
 
   final isEditing = false.obs;
 
-  ProfileController get controller => Get.put(ProfileController());
-
   @override
   Widget build(BuildContext context) {
+
     return _buildProfileTabView();
   }
 
   Widget _buildProfileTabView() {
+
     return Obx(()  {
         return Container(
             margin: const EdgeInsets.only(left: 200, right: 200, top: 20),
@@ -50,6 +50,7 @@ class ProfileView extends StatelessWidget {
                             height: Get.height / 2,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 TextFormField(
                                   controller:
@@ -67,6 +68,12 @@ class ProfileView extends StatelessWidget {
                                     hintText: 'Prenom',
                                     border: OutlineInputBorder(),
                                   ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Rentrez votre prenom';
+                                    }
+                                    return null;
+                                  },
                                 ),
                                 // - email
                                 TextFormField(
@@ -77,28 +84,49 @@ class ProfileView extends StatelessWidget {
                                     border: OutlineInputBorder(),
                                   ),
                                 ),
-                                // - password
+
                                 TextFormField(
-                                  obscureText: true,
                                   controller: controller.passwordController
                                       .value,
-                                  decoration: const InputDecoration(
-                                    hintText: 'Mot de passe',
-                                    border: OutlineInputBorder(),
+                                  obscureText: !controller.showPassword.value,
+                                  decoration: InputDecoration(
+                                    labelText: 'Mot de passe actuel',
+                                    border: const OutlineInputBorder(),
+                                    suffixIcon: IconButton(icon: Icon(
+                                        controller.showPassword.value ? Icons.visibility : Icons
+                                            .visibility_off
+                                    ), onPressed: () {
+                                      controller.showPassword.value = !controller.showPassword.value;
+                                    }),
                                   ),
                                 ),
-                                // - confirm password
-
                                 // submit button
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     primary: Colors.blueAccent,
                                     minimumSize: Size(double.infinity, 50),
                                   ),
-                                  onPressed: () {
-                                    controller.updateProfile();
+                                  onPressed: () async {
+                                   if(controller.passwordController.value.text.isNotEmpty){
+                                     await controller.updateProfile();
+                                   } else {
+                                     Get.dialog( AlertDialog(
+                                      title: const Text('Erreur'),
+                                      content: const Text('Veuillez remplir tous les champs'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Get.back();
+                                          },
+                                          child: const Text('Ok'),
+                                        )
+                                      ],
+                                    ));
+                                   }
                                   },
-                                  child: const Text('Enregistrer'),
+                                  child: controller.isLoading.value ? const Center(
+                                    child: CircularProgressIndicator.adaptive(),
+                                  ) : const Text('Enregistrer'),
                                 ),
                               ],
                             ),

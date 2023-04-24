@@ -17,9 +17,9 @@ class LoginScreen extends StatelessWidget {
     return Obx(() {
       return Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: const Text('Air France PPE'),
-        ),
+        // appBar: AppBar(
+        //   title: const Text('Air France PPE'),
+        // ),
         body: Container(
           margin: const EdgeInsets.only(left: 100, right: 100, top: 0),
           child: Form(
@@ -90,7 +90,9 @@ class LoginScreen extends StatelessWidget {
                         );
                       }
                     },
-                    child: const Text('Connexion'),
+                    child: controller.isLoading.value
+                        ? const CircularProgressIndicator.adaptive()
+                        : const Text('Login'),
                   ),
                 ),
 

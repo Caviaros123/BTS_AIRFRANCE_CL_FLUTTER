@@ -4,8 +4,11 @@ import 'dart:convert';
 import 'package:airfrance/views/auth/login.dart';
 import 'package:airfrance/views/profil/profil_view.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
+
+import '../controllers/profil_controller.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -72,13 +75,21 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   }
 
   @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.red,
         onPressed: () {
           box.erase();
+          Get.delete<ProfileController>();
           Get.offAll(() => LoginScreen());
         },
         child: const Icon(Icons.logout),
