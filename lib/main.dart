@@ -1,17 +1,13 @@
-import 'dart:convert';
+
 import 'dart:io';
 
 import 'package:airfrance/controllers/profil_controller.dart';
 import 'package:airfrance/routes/routes.dart';
-import 'package:airfrance/views/auth/login.dart';
-import 'package:airfrance/views/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:window_manager/window_manager.dart';
-
-import 'models/User.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

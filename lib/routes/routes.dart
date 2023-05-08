@@ -11,6 +11,7 @@ import 'package:airfrance/views/profil/profil_view.dart';
 import 'package:get/get.dart';
 
 import '../bindings/init_bindings.dart';
+import '../views/aeroports/aeroports_view.dart';
 
 class AppPages {
   AppPages._();
@@ -31,6 +32,16 @@ class AppPages {
     GetPage(
       name: Routes.home,
       page: () => HomeScreen(),
+      binding: InitBindings(),
+      middlewares: [
+        // IsFirstOpen(),
+        // RequireVisitor()
+      ],
+      // binding: SplashScreenBinding(),
+    ),
+    GetPage(
+      name: Routes.airports,
+      page: () => AeroportsView(),
       binding: InitBindings(),
       middlewares: [
         // IsFirstOpen(),
@@ -123,7 +134,7 @@ abstract class Routes {
   static const forgotPwd = '/forgot-password';
   static const welcome = '/welcome';
   static const dashboard = '/dashboard';
-  static const preLogin = '/pre-login';
+  static const airports = '/airports';
   static const signIn = '/login';
   static const signUp = '/register';
   static const profile = '/profile';

@@ -13,11 +13,6 @@ class HomeController extends GetxController {
 
   // create require authentication mysql database on init
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
   // create require authentication mysql database on ready
 
 

@@ -30,11 +30,17 @@ class ApiProvider {
     return await http.post(fullUrl, body: data, headers: _setHeaders());
   }
 
+  Future<http.Response> getData(apiUrl) async {
+    final fullUrl = Uri.parse(API_URL + apiUrl);
+    print('URL==$fullUrl');
+    return await http.get(fullUrl, headers: _setHeaders());
+  }
+
 
   Future<Response> dioConnect(url, data) async {
     final finalUrl = "$API_URL$url";
     print('url : $finalUrl');
-    print('postData Hello : ${data.toString()}');
+    print('postData : ${data.toString()}');
 
     try {
       dio.options.headers['accept'] = "application/json";
@@ -62,27 +68,6 @@ class ApiProvider {
       throw Exception(connErr);
     } finally {
       dio.close();
-    }
-  }
-
-  Future dbQuery(query, data) async {
-
-    final finalUrl = "$query";
-
-    printInfo(info: 'DB CONN PROVIDER========>: $finalUrl');
-
-    try {
-      final res = await http.post(
-        Uri.parse(finalUrl),
-        body: data,
-      );
-      printInfo(info: 'DB CONN PROVIDER========>: $res')  ;
-
-      return res;
-    } catch (e) {
-      printError(info: 'DBService login error: $e');
-    } finally {
-      // await conn.close();
     }
   }
 }

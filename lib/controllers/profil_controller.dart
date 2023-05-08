@@ -35,11 +35,6 @@ class ProfileController extends GetxController {
   final showPassword = false.obs;
 
   @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
   void onReady() {
      super.onReady();
      if (box.hasData('login')) {

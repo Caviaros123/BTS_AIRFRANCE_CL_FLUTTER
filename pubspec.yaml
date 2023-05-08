@@ -41,6 +41,7 @@ dependencies:
   http: ^0.13.5
   dio: ^4.0.0
   window_manager: ^0.3.2
+  syncfusion_flutter_datagrid: ^21.1.41
 
 dev_dependencies:
   flutter_test:
