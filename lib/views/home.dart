@@ -9,6 +9,7 @@ import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../controllers/profil_controller.dart';
+import 'aeroports/aeroports_view.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -37,9 +38,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     Tab(icon: Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
+      children: const [
         Icon(Icons.connecting_airports_outlined, color: Colors.black38,),
-        Text('Aéroport', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black38),)
+        Text('Aéroports', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black38),)
       ],
     )),
     Tab(icon: Row(
@@ -82,7 +83,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
@@ -118,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       controller: tabController,
       children: [
         ProfileView(),
-        ProfileView(),
+        const AeroportsView(),
         ProfileView(),
         ProfileView(),
         ProfileView(),

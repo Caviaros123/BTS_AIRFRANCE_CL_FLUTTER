@@ -2,15 +2,10 @@
 
 
 import 'dart:convert';
-
-import 'package:airfrance/bindings/init_bindings.dart';
-import 'package:airfrance/controllers/profil_controller.dart';
-import 'package:airfrance/views/home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-import '../models/User.dart';
 import '../providers/db_service.dart';
 import '../routes/routes.dart';
 
@@ -23,11 +18,6 @@ class LoginController extends GetxController{
   final isLoading = false.obs;
 
   final box = GetStorage();
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
   @override
   void dispose() {
